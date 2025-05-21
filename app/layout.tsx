@@ -1,7 +1,7 @@
 // app/layout.tsx
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,6 +17,11 @@ const geistMono = Geist_Mono({
     subsets: ["latin"],
 });
 
+const inter = Inter({
+    subsets: ['latin'],
+    variable: '--font-inter',
+});
+
 export const metadata: Metadata = {
     title: 'Tracking System',
     description: 'Track your packages easily',
@@ -28,8 +33,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="vi" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
-        <body className="bg-background text-foreground">
+        <html lang="vi" className={`${geistSans.variable} ${geistMono.variable} ${inter.variable}`} suppressHydrationWarning>
+        <body className="bg-background text-foreground font-sans">
         <NextAuthProvider>
           <ThemeProvider>
               <ScrollArea className="flex-1">
