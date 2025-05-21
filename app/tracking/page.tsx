@@ -13,6 +13,15 @@ import { getTrackingInfo } from '@/lib/trackingService';
 import { FormattedTrackingInfo } from '@/lib/types/tracking';
 import { Header } from '@/components/layout/Header';
 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import customParseFormat from 'dayjs/plugin/customParseFormat'; // Thêm plugin này
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(customParseFormat); // Kích hoạt plugin này
+
 export const metadata: Metadata = {
   title: 'Tracking | Thông tin đơn hàng',
 };
@@ -108,6 +117,8 @@ export default async function TrackingPage({ searchParams }: TrackingPageProps) 
       })
   );
 
+  
+
   return (
       <div className="flex flex-col min-h-screen">
         <Header />
@@ -142,6 +153,7 @@ export default async function TrackingPage({ searchParams }: TrackingPageProps) 
                   }
 
                   const trackingInfo = result.info!;
+                  console.log(trackingInfo)
 
                   return (
                       <div key={index} className="border rounded-lg overflow-hidden">
@@ -167,7 +179,7 @@ export default async function TrackingPage({ searchParams }: TrackingPageProps) 
                             <div className="grid grid-cols-2 gap-4">
                               <div>
                                 <p className="text-sm text-muted-foreground">Cập nhật</p>
-                                <p>{trackingInfo.updatedAt}</p>
+                                <p>{dayjs(trackingInfo.updatedAt, "HH:mm:ss D/M/YYYY", 'vi', true).tz('Asia/Ho_Chi_Minh').format('DD/MM/YYYY HH:mm:ss')}</p>
                               </div>
                               <div>
                                 <p className="text-sm text-muted-foreground">Dự kiến giao hàng</p>
@@ -210,7 +222,7 @@ export default async function TrackingPage({ searchParams }: TrackingPageProps) 
                                               </p>
                                               <div className="text-sm text-muted-foreground flex flex-col gap-y-1 mt-1">
                                                 <div className="flex flex-col gap-x-4">
-                                                  <span>{item.time.toLocaleString('vi-VN')}</span>
+                                                  <span>{dayjs(item.time).tz('Asia/Ho_Chi_Minh').format('DD/MM/YYYY HH:mm:ss')}</span>
                                                   {item.location && <span>Vị trí: {item.location}</span>}
                                                 </div>
                                                 {item.next_location && (
