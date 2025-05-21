@@ -3,7 +3,6 @@ import { Header } from '@/components/layout/Header';
 import { TrackingForm } from '@/components/tracking/TrackingForm';
 
 export default function Home() {
-    console.log("Home");
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
