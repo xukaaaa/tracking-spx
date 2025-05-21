@@ -104,6 +104,7 @@ export default async function TrackingPage({ searchParams }: TrackingPageProps) 
       decodeURIComponent(trackingParam as string).split(',').map(code => code.trim()).filter(Boolean)
   ));
 
+  console.time("fetchTrackingResults"); // Bắt đầu đo thời gian
   // Fetch tracking info for each tracking number
   const trackingResults: TrackingResult[] = await Promise.all(
       trackingNumbers.map(async (code) => {
@@ -116,6 +117,7 @@ export default async function TrackingPage({ searchParams }: TrackingPageProps) 
         }
       })
   );
+  console.timeEnd("fetchTrackingResults"); // Kết thúc đo thời gian và log ra console
 
   
 
