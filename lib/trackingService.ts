@@ -10,9 +10,7 @@ export async function fetchTrackingInfo(trackingNumber: string): Promise<SPXTrac
         headers: {
             'Content-Type': 'application/json',
         },
-        next: {
-            revalidate: 300, // Revalidate every 5 minutes
-        }
+        cache: 'no-store',
     });
 
     if (!response.ok) {
