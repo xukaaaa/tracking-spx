@@ -68,7 +68,8 @@ interface TrackingResultsProps {
 }
 
 export async function TrackingResults({ trackingNumbers }: TrackingResultsProps) {
-  console.time("fetchTrackingResults");
+  // Remove console.time to avoid issues with Next.js caching
+  // console.time("fetchTrackingResults");
   
   const trackingResults: TrackingResult[] = await Promise.all(
     trackingNumbers.map(async (code) => {
@@ -82,7 +83,7 @@ export async function TrackingResults({ trackingNumbers }: TrackingResultsProps)
     })
   );
   
-  console.timeEnd("fetchTrackingResults");
+  // console.timeEnd("fetchTrackingResults");
 
   return (
     <div className="bg-card text-card-foreground rounded-lg border p-6">

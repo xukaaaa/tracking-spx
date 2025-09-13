@@ -1,21 +1,23 @@
 // components/tracking/TrackingForm.tsx
 'use client';
 
-import React, {useState} from 'react';
-import {useRouter} from 'next/navigation';
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import {Loader2} from "lucide-react";
-import {handleClickChat} from "@/lib/action";
+import { Loader2 } from "lucide-react";
+import { handleClickChat } from "@/lib/action";
 
-import {Button} from "@/components/ui/button";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form";
-import {Textarea} from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 
-export function TrackingForm() {
-    console.log("Home");
+interface TrackingFormProps {
+  initialTrackingCodes?: string;
+}
 
+export function TrackingForm({ initialTrackingCodes = '' }: TrackingFormProps) {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
@@ -27,14 +29,14 @@ export function TrackingForm() {
                 const codes = value.split('\n').filter(code => code.trim() !== '');
                 return codes.length > 0 && codes.every(code => code.trim().toUpperCase().startsWith('SPX'));
             }, {
-                message: 'Tất cả mã vận đơn phải bắt đầu bằng SPX'
+                message: 'Tất cả mã vận đơn phải bắt đầu bằng SPX (có thể nhập chữ hoa hoặc chữ thường)'
             })
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            trackingCodes: '',
+            trackingCodes: initialTrackingCodes.split(',').join('\n'),
         },
         mode: 'onSubmit',
         reValidateMode: 'onSubmit'
@@ -43,19 +45,22 @@ export function TrackingForm() {
     function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
 
-        // Get clean array of tracking codes
+        // Get clean array of tracking codes and convert to uppercase
         const codes = values.trackingCodes
             .split('\n')
-            .map(code => code.trim())
+            .map(code => code.trim().toUpperCase())
             .filter(code => code !== '');
 
         // URL encode the codes for the query parameter
         const trackingParam = encodeURIComponent(codes.join(','));
 
-        // Simulate API call delay
+        // Update URL with tracking parameter
+        router.push(`/?spx_tn=${trackingParam}`);
+        
+        // Reset loading state after a short delay to ensure URL update
         setTimeout(() => {
-            router.push(`/tracking?spx_tn=${trackingParam}`);
-        }, 1000);
+            setIsLoading(false);
+        }, 100);
     }
 
     // Function to clear errors when user types
@@ -69,8 +74,6 @@ export function TrackingForm() {
         onChange(e);
     };
 
-
-
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -82,7 +85,7 @@ export function TrackingForm() {
                             <FormLabel>Mã vận đơn</FormLabel>
                             <FormControl>
                                 <Textarea
-                                    placeholder="Nhập mỗi mã vận đơn trên một dòng (SPX...)"
+                                    placeholder="Nhập mỗi mã vận đơn trên một dòng (ví dụ: SPX123456789 hoặc spx123456789)"
                                     className="min-h-[120px]"
                                     {...field}
                                     onChange={(e) => handleInputChange(e, field.onChange)}
