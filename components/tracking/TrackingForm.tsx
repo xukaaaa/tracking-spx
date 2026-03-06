@@ -25,11 +25,14 @@ export function TrackingForm({ initialTrackingCodes = '' }: TrackingFormProps) {
         trackingCodes: z.string()
             .nonempty('Vui lòng nhập mã vận đơn')
             .refine(value => {
-                // Split by new line and check if all codes match the SPX pattern
+                // Split by new line and check if all codes match the SPX or VN pattern
                 const codes = value.split('\n').filter(code => code.trim() !== '');
-                return codes.length > 0 && codes.every(code => code.trim().toUpperCase().startsWith('SPX'));
+                return codes.length > 0 && codes.every(code => {
+                    const upperCode = code.trim().toUpperCase();
+                    return upperCode.startsWith('SPX') || upperCode.startsWith('VN');
+                });
             }, {
-                message: 'Tất cả mã vận đơn phải bắt đầu bằng SPX (có thể nhập chữ hoa hoặc chữ thường)'
+                message: 'Tất cả mã vận đơn phải bắt đầu bằng SPX hoặc VN (có thể nhập chữ hoa hoặc chữ thường)'
             })
     });
 
@@ -85,7 +88,7 @@ export function TrackingForm({ initialTrackingCodes = '' }: TrackingFormProps) {
                             <FormLabel>Mã vận đơn</FormLabel>
                             <FormControl>
                                 <Textarea
-                                    placeholder="Nhập mỗi mã vận đơn trên một dòng (ví dụ: SPX123456789 hoặc spx123456789)"
+                                    placeholder="Nhập mỗi mã vận đơn trên một dòng (ví dụ: SPX123456789, spx123456789, VN262289978282X)"
                                     className="min-h-[120px]"
                                     {...field}
                                     onChange={(e) => handleInputChange(e, field.onChange)}

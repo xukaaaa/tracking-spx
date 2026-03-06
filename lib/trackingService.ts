@@ -48,9 +48,13 @@ export async function getTrackingInfo(trackingNumber: string): Promise<Formatted
             origin = `${data.data.order_info.pickup_district}, ${data.data.order_info.pickup_city}`;
         } else {
             // Try to find origin from earliest tracking record with location
+            // Support both domestic (F0/F1) and cross-border (F2/F3) tracking codes
             const firstPickupRecord = [...records].reverse().find(
                 record => record.current_location?.full_address &&
-                    (record.tracking_code.startsWith('F0') || record.tracking_code.startsWith('F1'))
+                    (record.tracking_code.startsWith('F0') || 
+                     record.tracking_code.startsWith('F1') ||
+                     record.tracking_code.startsWith('F2') || 
+                     record.tracking_code.startsWith('F3'))
             );
             if (firstPickupRecord?.current_location?.full_address) {
                 origin = firstPickupRecord.current_location.full_address;
