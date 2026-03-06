@@ -2,11 +2,29 @@
 
 // English to Vietnamese status mapping
 export const trackingStatusMapping: Record<string, string> = {
-    // Pickup statuses
+    // Pickup statuses (Domestic)
     "Pickup From Domestic Seller": "Đã lấy hàng từ người bán",
     "Pickup Attempt Started": "Đang lấy hàng",
 
-    // Transit statuses
+    // Cross-border Pickup statuses
+    "Manifested": "[Quốc Tế] Người gửi đang chuẩn bị hàng",
+    "SLSTN Created": "[Quốc Tế] Đã tạo mã vận đơn, đang gửi yêu cầu đến đối tác vận chuyển",
+    "Pickup From Cross Border Seller": "[Quốc Tế] Đơn vị vận chuyển quốc tế lấy hàng thành công",
+
+    // Cross-border Transit statuses
+    "Transit Warehouse Inbound": "[Quốc Tế] Đơn hàng đã nhập kho quốc tế",
+    "Transit Warehouse Inbounding": "[Quốc Tế] Đơn hàng đang chờ nhập kho quốc tế",
+    "Packing In Transit Warehouse": "[Quốc Tế] Đơn hàng đang được phân loại tại kho quốc tế",
+    "Packed In Transit Warehouse": "[Quốc Tế] Đơn hàng đã được hoàn tất phân loại tại kho quốc tế",
+    "Transit Warehouse Outbounding": "[Quốc Tế] Đơn hàng đang chờ xuất kho quốc tế",
+    "Transit Warehouse Outbound": "[Quốc Tế] Đơn hàng đã xuất kho quốc tế",
+    "Forwarder Received Parcel": "[Quốc Tế] Đơn hàng đã được bàn giao cho đơn vị vận chuyển kế tiếp",
+    "Export Customs Cleared": "[Quốc Tế] Đơn hàng đã được thông quan xuất khẩu",
+    "Departure From Origin Port": "[Quốc Tế] Đơn hàng chuẩn bị rời cảng xuất xứ",
+    "Arrived at Destination Port": "[Quốc Tế] Đơn hàng đã đến cảng đích",
+    "Import Customs Cleared": "[Quốc Tế] Đơn hàng đã được thông quan nhập khẩu",
+
+    // Domestic Transit statuses
     "Enter Domestic First Mile Hub": "Đã đến kho trung chuyển đầu tiên",
     "Left Domestic First Mile Hub": "Đã rời kho trung chuyển đầu tiên",
     "Loaded to Truck in First Mile Hub": "Đã xếp lên xe vận chuyển",
